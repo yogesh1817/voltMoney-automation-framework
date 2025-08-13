@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Failed suite [VoltMoneyFunctionalSuite]" guice-stage="DEVELOPMENT">
+  <parameter name="browser" value="chrome"/>
+  <test thread-count="5" name="FunctionalTests(failed)">
+    <classes>
+      <class name="tests.FunctionalTests">
+        <methods>
+          <include name="beforeClass"/>
+          <include name="testPANInput"/>
+          <include name="testTermsCheckbox"/>
+          <include name="testPageRefresh"/>
+          <include name="testFAQSection"/>
+          <include name="testNavigationMenu"/>
+          <include name="testMobileNumberInput"/>
+          <include name="afterSuite"/>
+          <include name="afterClass"/>
+          <include name="testPageLoad"/>
+          <include name="testValidFormSubmission"/>
+          <include name="testFooterLinks"/>
+          <include name="testBenefitsSection"/>
+          <include name="beforeMethod"/>
+          <include name="beforeSuite"/>
+          <include name="testHowItWorksSection"/>
+          <include name="testSocialMediaLinks"/>
+          <include name="testPartnerLogos"/>
+          <include name="testFormReset"/>
+          <include name="afterMethod"/>
+        </methods>
+      </class> <!-- tests.FunctionalTests -->
+    </classes>
+  </test> <!-- FunctionalTests(failed) -->
+  <test thread-count="5" name="ValidationTests(failed)">
+    <classes>
+      <class name="tests.ValidationTests">
+        <methods>
+          <include name="testCaseSensitivityInPAN"/>
+          <include name="beforeClass"/>
+          <include name="testValidPANFormat"/>
+          <include name="testMandatoryTermsAcceptance"/>
+          <include name="testInvalidMobileNumberFormat"/>
+          <include name="testValidMobileNumberFormat"/>
+          <include name="testFieldLengthRestrictions"/>
+          <include name="afterSuite"/>
+          <include name="testMandatoryPANField"/>
+          <include name="testMandatoryMobileField"/>
+          <include name="afterClass"/>
+          <include name="testSpecialCharactersInMobile"/>
+          <include name="testInvalidPANFormat"/>
+          <include name="beforeMethod"/>
+          <include name="beforeSuite"/>
+          <include name="afterMethod"/>
+          <include name="testErrorMessageDisplay"/>
+        </methods>
+      </class> <!-- tests.ValidationTests -->
+    </classes>
+  </test> <!-- ValidationTests(failed) -->
+</suite> <!-- Failed suite [VoltMoneyFunctionalSuite] -->
