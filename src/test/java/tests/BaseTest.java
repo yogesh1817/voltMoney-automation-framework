@@ -36,12 +36,21 @@ public class BaseTest {
         ExtentManager.createInstance();
         logger.info("ExtentReports initialized");
 
-        // Initialize driver ONCE for the entire suite
-        DriverFactory.initializeDriverWithAutoVersion(browser, headless);
+        // NOTE: WebDriver will be initialized per test method to support parallel execution
     }
 
     @BeforeMethod(alwaysRun = true)
     public void beforeMethod(java.lang.reflect.Method method) {
+        // Fallback if suite params were not set
+        if (browser == null) {
+            browser = ConfigReader.getBrowser();
+            headless = ConfigReader.isHeadless();
+            environment = ConfigReader.getEnvironment();
+        }
+
+        // Initialize driver per method/thread
+        DriverFactory.initializeDriverWithAutoVersion(browser, headless);
+
         extentTest = ExtentManager.createTest(method.getName(), getTestDescription(method));
         extentTest.info("Test started: " + method.getName());
         logger.info("Starting test method: {}", method.getName());
@@ -71,12 +80,16 @@ public class BaseTest {
             }
         } catch (Exception e) {
             logger.error("Error in afterMethod for test: {}", testName, e);
+        } finally {
+            // Quit driver after each method to avoid state leakage and free resources
+            DriverFactory.quitDriver();
         }
     }
 
     @AfterSuite(alwaysRun = true)
     public void afterSuite() {
         try {
+            // In case any driver remains, ensure cleanup
             DriverFactory.quitDriver();
             ExtentManager.flush();
             logger.info("ExtentReports flushed successfully");

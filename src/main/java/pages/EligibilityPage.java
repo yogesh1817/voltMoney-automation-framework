@@ -4,13 +4,17 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import java.time.Duration;
+import utils.ConfigReader;
 
 public class EligibilityPage extends BasePage {
 
     private static final Logger logger = LoggerFactory.getLogger(EligibilityPage.class);
 
     public static final String PAGE_URL =
-            "https://voltmoney.in/check-loan-eligibility-against-mutual-funds";
+            ConfigReader.getBaseUrl();
 
     @FindBy(xpath = "//input[contains(translate(@placeholder,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'mobile') or " +
             "contains(translate(@name,'ABCDEFGHIJKLMNOPQRSTUVWXYZ','abcdefghijklmnopqrstuvwxyz'),'mobile') or " +
@@ -118,9 +122,15 @@ public class EligibilityPage extends BasePage {
 
     public boolean isSubmissionSuccessful() {
         try {
-            Thread.sleep(1200);
-        } catch (InterruptedException ignored) {}
-        return !PAGE_URL.equalsIgnoreCase(getCurrentUrl()) || isElementDisplayed(successMessage);
+            WebDriverWait shortWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            return shortWait.until(ExpectedConditions.or(
+                    ExpectedConditions.not(ExpectedConditions.urlToBe(PAGE_URL)),
+                    ExpectedConditions.visibilityOf(successMessage)
+            ));
+        } catch (Exception e) {
+            logger.debug("Submission success condition not met within timeout: {}", e.getMessage());
+            return false;
+        }
     }
 
     public boolean isErrorMessageDisplayed() {

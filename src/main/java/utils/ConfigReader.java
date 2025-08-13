@@ -1,6 +1,6 @@
 package utils;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.io.IOException;
 import java.util.Properties;
 import org.slf4j.Logger;
@@ -9,15 +9,20 @@ import org.slf4j.LoggerFactory;
 public class ConfigReader {
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigReader.class);
-    private static final String CONFIG_FILE_PATH = "src/test/resources/config.properties";
+    private static final String CONFIG_RESOURCE = "config.properties";
     private static Properties props = new Properties();
 
     static {
-        try (FileInputStream fis = new FileInputStream(CONFIG_FILE_PATH)) {
-            props.load(fis);
-            logger.info("Config loaded from {}", CONFIG_FILE_PATH);
+        try (InputStream is = ConfigReader.class.getClassLoader().getResourceAsStream(CONFIG_RESOURCE)) {
+            if (is != null) {
+                props.load(is);
+                logger.info("Config loaded from classpath resource: {}", CONFIG_RESOURCE);
+            } else {
+                logger.warn("Config resource '{}' not found on classpath. Using defaults.", CONFIG_RESOURCE);
+                loadDefaults();
+            }
         } catch (IOException e) {
-            logger.warn("Config file not found. Using defaults.");
+            logger.warn("Error loading config from classpath. Using defaults.");
             loadDefaults();
         }
     }

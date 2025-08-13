@@ -10,7 +10,7 @@ public class TestData {
 
     public static final String[] VALID_PAN_NUMBERS = {
         "ABCDE1234F", "PQRST5678G", "LMNOP9012H", "UVWXY3456I",
-        "FGHIJ7890J", "KLMNO2345K", "RSTUV6789L", "WXYZ01234M"
+        "FGHIJ7890J", "KLMNO2345K", "RSTUV6789L", "VWXYZ1234M"
     };
 
     // Invalid Data
